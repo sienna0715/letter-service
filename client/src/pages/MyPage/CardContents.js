@@ -29,7 +29,6 @@ export function CardContents() {
 }
 
 const Contents = styled.div`
-  
   .user {
     height: 70px;
     display: flex;
