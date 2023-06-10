@@ -1,5 +1,8 @@
 # 💌 SENDY
-🔗 https://www.sendy.site/
+🔗 https://www.sendy.site/ <br/><br/>
+Id: admin@gmail.com <br/>
+pwd: admin1234!
+<br/><br/>
 
 ## ⏰ 개발 기간
  - 2023.03.03 ~ 2023.04.03 
