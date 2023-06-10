@@ -1,7 +1,7 @@
 # 💌 SENDY
 🔗 https://www.sendy.site/ <br/><br/>
 Id: admin@gmail.com <br/>
-pwd: admin1234!
+pw: admin1234!
 <br/><br/>
 
 ## ⏰ 개발 기간
