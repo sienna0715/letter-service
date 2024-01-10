@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as L from "./LetterBoxStyled";
 import LetterOutItem from "./LetterOutItem";
 import useStore from "../../store/store";
@@ -23,29 +23,16 @@ function LetterOutgoing({
   const [isLoading, setIsLoading] = useState(false);
   const [ref, inView] = useInView();
 
-  const getLetters = useCallback(
-    async (page) => {
-      return await axios({
-        method: "get",
-        url: `/api/sendy/mailbox/messages/out?page=${page}`,
-        headers: {
-          "ngrok-skip-browser-warning": "230328",
-          Authorization: getCookie("accessToken"),
-        },
-      })
-        .then((res) => {
-          setOutLetters(
-            page === 1 ? res.data.data : [...outLetters, ...res.data.data]
-          );
-        })
-        .catch((err) => {
-          if (err.response.status === 401) {
-            Refresh().then(() => console.log("리프레시 실행"));
-          }
-        });
-    },
-    [outLetters]
-  );
+  const getLetters = async (page) => {
+    return await axios({
+      method: "get",
+      url: `/api/sendy/mailbox/messages/out?page=${page}`,
+      headers: {
+        "ngrok-skip-browser-warning": "230328",
+        Authorization: getCookie("accessToken"),
+      },
+    });
+  };
   // console.log(isLoading);
 
   useEffect(() => {
@@ -55,8 +42,28 @@ function LetterOutgoing({
   }, []);
 
   useEffect(() => {
-    getLetters(page);
+    getLetters(page)
+      .then((res) => {
+        setOutLetters(
+          page === 1 ? res.data.data : [...outLetters, ...res.data.data]
+        );
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          Refresh().then(() =>
+            getLetters(page).then((res) => {
+              setOutLetters(
+                page === 1 ? res.data.data : [...outLetters, ...res.data.data]
+              );
+            })
+          );
+        }
+      });
   }, [page]);
+
+  // useEffect(() => {
+  //   getLetters(page);
+  // }, [page]);
 
   useEffect(() => {
     if (inView && !isLoading) {
